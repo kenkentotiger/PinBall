@@ -25,34 +25,39 @@ public class InputTouches : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 0)
+        {
+            SetAngle(this.defaultAngle);
+        }
+
+        for (int i = 0; i < Input.touchCount; i++)
         {
             // 座標xがスクリーンの２分の１以上の場合
-            if (Input.mousePosition.x <= Screen.width / 2)
+            if (Input.touches[i].position.x <= Screen.width / 2)
             {
                 //左矢印キーを押した時左フリッパーを動かす
-                if (Input.touches[0].phase == TouchPhase.Began && tag == "LeftFripperTag")
+                if (Input.touches[i].phase == TouchPhase.Began && tag == "LeftFripperTag")
                 {
                     SetAngle(this.flickAngle);
-                }
-                //矢印キー離されたときフリッパーを元に戻す
-                if (Input.touches[0].phase == TouchPhase.Ended && tag == "LeftFripperTag")
-                {
-                    SetAngle(this.defaultAngle);
                 }
             }
-            else
+            else if (Input.touches[i].position.x >= Screen.width / 2)
             {
                 //右矢印キーを押した時右フリッパーを動かす
-                if (Input.touches[0].phase == TouchPhase.Began && tag == "RightFripperTag")
+                if (Input.touches[i].phase == TouchPhase.Began && tag == "RightFripperTag")
                 {
                     SetAngle(this.flickAngle);
                 }
-                //右矢印キーを押した時右フリッパーを元に戻す
-                if (Input.touches[0].phase == TouchPhase.Ended && tag == "RightFripperTag")
-                {
-                    SetAngle(this.defaultAngle);
-                }
+                //左矢印キー離されたときフリッパーを元に戻す
+            }
+            if (Input.touches[i].phase == TouchPhase.Ended && tag == "LeftFripperTag")
+            {
+                SetAngle(this.defaultAngle);
+            }
+                //右矢印キーを離されたとき右フリッパーを元に戻す
+            if (Input.touches[i].phase == TouchPhase.Ended && tag == "RightFripperTag")
+            {
+                SetAngle(this.defaultAngle);
             }
         }
     }
